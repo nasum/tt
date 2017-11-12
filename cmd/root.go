@@ -15,5 +15,6 @@ func init() {
 	cobra.OnInitialize()
 	RootCmd.AddCommand(
 		timelineCmd(),
+		tweetCmd(),
 	)
 }
