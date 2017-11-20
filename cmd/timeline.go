@@ -10,13 +10,13 @@ import (
 )
 
 func timelineCmd(client twitter.Client) *cobra.Command {
-	htp := &twitter.HomeTimelineParams{}
+	homeTimelineParams := &twitter.HomeTimelineParams{}
 
 	cmd := &cobra.Command{
 		Use:   "timeline",
 		Short: "get your timeline",
 		Run: func(cmd *cobra.Command, args []string) {
-			tweets, res, err := client.Timelines.HomeTimeline(htp)
+			tweets, res, err := client.Timelines.HomeTimeline(homeTimelineParams)
 
 			if err != nil {
 				fmt.Println(res)
@@ -29,9 +29,9 @@ func timelineCmd(client twitter.Client) *cobra.Command {
 	}
 
 	flags := cmd.Flags()
-	flags.IntVarP(&htp.Count, "count", "c", 20, "Set tweet count")
-	flags.Int64VarP(&htp.SinceID, "since-id", "s", 0, "Set since tweet id")
-	flags.Int64VarP(&htp.MaxID, "max-id", "m", 0, "Set max tweet id")
+	flags.IntVarP(&homeTimelineParams.Count, "count", "c", 20, "Set tweet count")
+	flags.Int64VarP(&homeTimelineParams.SinceID, "since-id", "s", 0, "Set since tweet id")
+	flags.Int64VarP(&homeTimelineParams.MaxID, "max-id", "m", 0, "Set max tweet id")
 
 	return cmd
 }
@@ -40,5 +40,5 @@ func showTweet(tweet twitter.Tweet) {
 	green := color.New(color.FgGreen).SprintFunc()
 	yellow := color.New(color.FgYellow).SprintfFunc()
 	cyan := color.New(color.FgCyan).SprintfFunc()
-	fmt.Printf("%s %s %s %s \n", green(tweet.CreatedAt), yellow(strconv.FormatInt(tweet.ID, 10)), cyan("@"+tweet.User.ScreenName), tweet.Text)
+	fmt.Printf("%s\t%s\t%s\t%s\n", green(tweet.CreatedAt), yellow(strconv.FormatInt(tweet.ID, 10)), cyan("@"+tweet.User.ScreenName), tweet.Text)
 }
