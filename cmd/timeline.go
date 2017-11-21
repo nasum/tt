@@ -2,10 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/dghubble/go-twitter/twitter"
-	"github.com/fatih/color"
+	"github.com/nasum/tt/lib"
 	"github.com/spf13/cobra"
 )
 
@@ -23,7 +22,7 @@ func timelineCmd(client twitter.Client) *cobra.Command {
 			}
 
 			for _, v := range tweets {
-				showTweet(v)
+				lib.ShowTweet(v)
 			}
 		},
 	}
@@ -34,11 +33,4 @@ func timelineCmd(client twitter.Client) *cobra.Command {
 	flags.Int64VarP(&homeTimelineParams.MaxID, "max-id", "m", 0, "Set max tweet id")
 
 	return cmd
-}
-
-func showTweet(tweet twitter.Tweet) {
-	green := color.New(color.FgGreen).SprintFunc()
-	yellow := color.New(color.FgYellow).SprintfFunc()
-	cyan := color.New(color.FgCyan).SprintfFunc()
-	fmt.Printf("%s\t%s\t%s\t%s\n", green(tweet.CreatedAt), yellow(strconv.FormatInt(tweet.ID, 10)), cyan("@"+tweet.User.ScreenName), tweet.Text)
 }
