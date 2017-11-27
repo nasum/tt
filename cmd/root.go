@@ -1,11 +1,10 @@
 package cmd
 
 import (
-	"os"
-
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var RootCmd = &cobra.Command{
@@ -16,10 +15,10 @@ var RootCmd = &cobra.Command{
 }
 
 func init() {
-	consumerKey := os.Getenv("CONSUMER_KEY")
-	consumerSecret := os.Getenv("CONSUMER_SECRET")
-	accessToken := os.Getenv("ACCESS_TOKEN")
-	accessSecret := os.Getenv("ACCESS_SECRET")
+	consumerKey := viper.GetString("CONSUMER_KEY")
+	consumerSecret := viper.GetString("CONSUMER_SECRET")
+	accessToken := viper.GetString("ACCESS_TOKEN")
+	accessSecret := viper.GetString("ACCESS_SECRET")
 
 	config := oauth1.NewConfig(consumerKey, consumerSecret)
 	token := oauth1.NewToken(accessToken, accessSecret)
