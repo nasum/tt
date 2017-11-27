@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 	"github.com/spf13/cobra"
@@ -15,6 +17,15 @@ var RootCmd = &cobra.Command{
 }
 
 func init() {
+	viper.SetConfigName("ttrc")
+	viper.AddConfigPath("./")
+	viper.AddConfigPath("$HOME/")
+
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+	}
+
 	consumerKey := viper.GetString("CONSUMER_KEY")
 	consumerSecret := viper.GetString("CONSUMER_SECRET")
 	accessToken := viper.GetString("ACCESS_TOKEN")
