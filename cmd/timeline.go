@@ -8,29 +8,68 @@ import (
 	"github.com/spf13/cobra"
 )
 
+type TimelineParams struct {
+	Count   int
+	SinceID int64
+	MaxID   int64
+	Reply   bool
+}
+
 func timelineCmd(client twitter.Client) *cobra.Command {
-	homeTimelineParams := &twitter.HomeTimelineParams{}
+	timelineParams := &TimelineParams{}
 
 	cmd := &cobra.Command{
 		Use:   "timeline",
 		Short: "get your timeline",
 		Run: func(cmd *cobra.Command, args []string) {
-			tweets, res, err := client.Timelines.HomeTimeline(homeTimelineParams)
-
-			if err != nil {
-				fmt.Println(res)
-			}
-
-			for _, v := range tweets {
-				lib.ShowTweet(v)
+			if timelineParams.Reply == true {
+				mentionTimeline(client, *timelineParams)
+			} else {
+				homeTimeline(client, *timelineParams)
 			}
 		},
 	}
 
 	flags := cmd.Flags()
-	flags.IntVarP(&homeTimelineParams.Count, "count", "c", 20, "Set tweet count")
-	flags.Int64VarP(&homeTimelineParams.SinceID, "since-id", "s", 0, "Set since tweet id")
-	flags.Int64VarP(&homeTimelineParams.MaxID, "max-id", "m", 0, "Set max tweet id")
+	flags.IntVarP(&timelineParams.Count, "count", "c", 20, "Set tweet count")
+	flags.Int64VarP(&timelineParams.SinceID, "since-id", "s", 0, "Set since tweet id")
+	flags.Int64VarP(&timelineParams.MaxID, "max-id", "m", 0, "Set max tweet id")
+	flags.BoolVarP(&timelineParams.Reply, "reply", "r", false, "show mention timeline")
 
 	return cmd
+}
+
+func homeTimeline(client twitter.Client, timelineParams TimelineParams) {
+	homeTimelineParams := &twitter.HomeTimelineParams{
+		Count:   timelineParams.Count,
+		SinceID: timelineParams.SinceID,
+		MaxID:   timelineParams.MaxID,
+	}
+	tweets, res, err := client.Timelines.HomeTimeline(homeTimelineParams)
+
+	if err != nil {
+		fmt.Println(res)
+	}
+
+	for _, v := range tweets {
+		lib.ShowTweet(v)
+	}
+}
+
+func mentionTimeline(client twitter.Client, timelineParams TimelineParams) {
+	mentionTimelineParams := &twitter.MentionTimelineParams{
+		Count:   timelineParams.Count,
+		SinceID: timelineParams.SinceID,
+		MaxID:   timelineParams.MaxID,
+	}
+
+	tweets, res, err := client.Timelines.MentionTimeline(mentionTimelineParams)
+
+	if err != nil {
+		fmt.Println(res)
+	}
+
+	for _, v := range tweets {
+		lib.ShowTweet(v)
+	}
 }
