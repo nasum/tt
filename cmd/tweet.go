@@ -7,6 +7,7 @@ import (
 )
 
 func tweetCmd(client twitter.Client) *cobra.Command {
+	tm := lib.TweetMethods{Client: client}
 	cmd := &cobra.Command{
 		Use:   "tweet",
 		Short: "post your tweet",
@@ -17,11 +18,20 @@ func tweetCmd(client twitter.Client) *cobra.Command {
 				return
 			}
 
-			tm := lib.TweetMethods{Client: client, Text: args[0]}
+			tm.Text = args[0]
+
 			tweet := tm.Update()
 
 			lib.ShowTweet(*tweet)
 		},
 	}
+
+	flags := cmd.Flags()
+	flags.Int64VarP(&tm.ReplyTo, "reply", "r", 0, "Set reply tweet id")
+
 	return cmd
+}
+
+func tweet(client twitter.Client, text string, reply_to string) {
+
 }

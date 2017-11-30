@@ -7,12 +7,16 @@ import (
 )
 
 type TweetMethods struct {
-	Client twitter.Client
-	Text   string
+	Client  twitter.Client
+	Text    string
+	ReplyTo int64
 }
 
 func (t *TweetMethods) Update() *twitter.Tweet {
-	tweet, res, err := t.Client.Statuses.Update(t.Text, nil)
+	status := twitter.StatusUpdateParams{
+		InReplyToStatusID: t.ReplyTo,
+	}
+	tweet, res, err := t.Client.Statuses.Update(t.Text, &status)
 
 	if err != nil {
 		fmt.Println(res)
