@@ -32,9 +32,9 @@ func timelineCmd(client twitter.Client) *cobra.Command {
 
 	flags := cmd.Flags()
 	flags.IntVarP(&timelineParams.Count, "count", "c", 20, "Set tweet count")
-	flags.Int64VarP(&timelineParams.SinceID, "since-id", "s", 0, "Set since tweet id")
-	flags.Int64VarP(&timelineParams.MaxID, "max-id", "m", 0, "Set max tweet id")
-	flags.BoolVarP(&timelineParams.Reply, "reply", "r", false, "show mention timeline")
+	flags.Int64VarP(&timelineParams.SinceID, "since-id", "S", 0, "Set since tweet id")
+	flags.Int64VarP(&timelineParams.MaxID, "max-id", "M", 0, "Set max tweet id")
+	flags.BoolVarP(&timelineParams.Reply, "mention", "m", false, "show mention timeline")
 
 	return cmd
 }

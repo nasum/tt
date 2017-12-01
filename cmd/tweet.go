@@ -27,7 +27,7 @@ func tweetCmd(client twitter.Client) *cobra.Command {
 	}
 
 	flags := cmd.Flags()
-	flags.Int64VarP(&tm.ReplyTo, "reply", "r", 0, "Set reply tweet id")
+	flags.Int64VarP(&tm.ReplyTo, "mention", "m", 0, "Set mention tweet id")
 
 	return cmd
 }
