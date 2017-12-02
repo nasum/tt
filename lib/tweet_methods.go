@@ -2,25 +2,26 @@ package lib
 
 import (
 	"fmt"
+	"net/url"
 
-	"github.com/dghubble/go-twitter/twitter"
+	"github.com/ChimeraCoder/anaconda"
 )
 
 type TweetMethods struct {
-	Client  twitter.Client
+	Api     anaconda.TwitterApi
 	Text    string
 	ReplyTo int64
 }
 
-func (t *TweetMethods) Update() *twitter.Tweet {
-	status := twitter.StatusUpdateParams{
-		InReplyToStatusID: t.ReplyTo,
-	}
-	tweet, res, err := t.Client.Statuses.Update(t.Text, &status)
+func (t *TweetMethods) Update() *anaconda.Tweet {
+	v := url.Values{}
+	v.Set("in_reply_to_status_id", fmt.Sprint(t.ReplyTo))
+
+	tweet, err := t.Api.PostTweet(t.Text, v)
 
 	if err != nil {
-		fmt.Println(res)
+		fmt.Println(err)
 		return nil
 	}
-	return tweet
+	return &tweet
 }

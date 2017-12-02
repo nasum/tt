@@ -1,13 +1,14 @@
 package cmd
 
 import (
+	"github.com/ChimeraCoder/anaconda"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/nasum/tt/lib"
 	"github.com/spf13/cobra"
 )
 
-func tweetCmd(client twitter.Client) *cobra.Command {
-	tm := lib.TweetMethods{Client: client}
+func tweetCmd(api anaconda.TwitterApi) *cobra.Command {
+	tm := lib.TweetMethods{Api: api}
 	cmd := &cobra.Command{
 		Use:   "tweet",
 		Short: "post your tweet",
