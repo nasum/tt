@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"net/url"
 
-	"github.com/dghubble/go-twitter/twitter"
+	"github.com/ChimeraCoder/anaconda"
 	"github.com/nasum/tt/lib"
 	"github.com/spf13/cobra"
 )
@@ -15,7 +16,7 @@ type TimelineParams struct {
 	Reply   bool
 }
 
-func timelineCmd(client twitter.Client) *cobra.Command {
+func timelineCmd(api anaconda.TwitterApi) *cobra.Command {
 	timelineParams := &TimelineParams{}
 
 	cmd := &cobra.Command{
@@ -23,9 +24,9 @@ func timelineCmd(client twitter.Client) *cobra.Command {
 		Short: "get your timeline",
 		Run: func(cmd *cobra.Command, args []string) {
 			if timelineParams.Reply == true {
-				mentionTimeline(client, *timelineParams)
+				mentionTimeline(api, *timelineParams)
 			} else {
-				homeTimeline(client, *timelineParams)
+				homeTimeline(api, *timelineParams)
 			}
 		},
 	}
@@ -39,16 +40,13 @@ func timelineCmd(client twitter.Client) *cobra.Command {
 	return cmd
 }
 
-func homeTimeline(client twitter.Client, timelineParams TimelineParams) {
-	homeTimelineParams := &twitter.HomeTimelineParams{
-		Count:   timelineParams.Count,
-		SinceID: timelineParams.SinceID,
-		MaxID:   timelineParams.MaxID,
-	}
-	tweets, res, err := client.Timelines.HomeTimeline(homeTimelineParams)
+func homeTimeline(api anaconda.TwitterApi, timelineParams TimelineParams) {
+	v := buildParams(timelineParams)
+
+	tweets, err := api.GetHomeTimeline(v)
 
 	if err != nil {
-		fmt.Println(res)
+		fmt.Println(err)
 	}
 
 	for _, v := range tweets {
@@ -56,20 +54,28 @@ func homeTimeline(client twitter.Client, timelineParams TimelineParams) {
 	}
 }
 
-func mentionTimeline(client twitter.Client, timelineParams TimelineParams) {
-	mentionTimelineParams := &twitter.MentionTimelineParams{
-		Count:   timelineParams.Count,
-		SinceID: timelineParams.SinceID,
-		MaxID:   timelineParams.MaxID,
-	}
+func mentionTimeline(api anaconda.TwitterApi, timelineParams TimelineParams) {
+	v := buildParams(timelineParams)
 
-	tweets, res, err := client.Timelines.MentionTimeline(mentionTimelineParams)
+	tweets, err := api.GetMentionsTimeline(v)
 
 	if err != nil {
-		fmt.Println(res)
+		fmt.Println(err)
 	}
 
 	for _, v := range tweets {
 		lib.ShowTweet(v)
 	}
+}
+
+func buildParams(timelineParams TimelineParams) url.Values {
+	v := url.Values{}
+	v.Set("count", fmt.Sprint(timelineParams.Count))
+	if timelineParams.SinceID > 0 {
+		v.Set("since_id", fmt.Sprint(timelineParams.SinceID))
+	}
+	if timelineParams.MaxID > 0 {
+		v.Set("max_id", fmt.Sprint(timelineParams.MaxID))
+	}
+	return v
 }
