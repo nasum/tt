@@ -48,7 +48,7 @@ func homeTimeline(client twitter.Client, timelineParams TimelineParams) error {
 	tweets, res, err := client.Timelines.HomeTimeline(homeTimelineParams)
 
 	if err != nil {
-		return fmt.Errorf("Cannot get home-timeline: %v: %v", err, res.Status)
+		return fmt.Errorf("cannot get home-timeline: %v: %v", err, res.Status)
 	}
 
 	for _, v := range tweets {
@@ -67,7 +67,7 @@ func mentionTimeline(client twitter.Client, timelineParams TimelineParams) error
 	tweets, res, err := client.Timelines.MentionTimeline(mentionTimelineParams)
 
 	if err != nil {
-		return fmt.Errorf("Cannot get mention-timeline: %v: %v", err, res.Status)
+		return fmt.Errorf("cannot get mention-timeline: %v: %v", err, res.Status)
 	}
 
 	for _, v := range tweets {
