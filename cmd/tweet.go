@@ -11,12 +11,8 @@ func tweetCmd(client twitter.Client) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "tweet",
 		Short: "post your tweet",
+		Args:  cobra.RangeArgs(1, 1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-
-			if len(args) == 0 {
-				return cmd.Help()
-			}
-
 			tm.Text = args[0]
 
 			tweet, err := tm.Update()
