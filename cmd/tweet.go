@@ -21,8 +21,7 @@ func tweetCmd(client twitter.Client) *cobra.Command {
 
 			tweet := tm.Update()
 
-			lib.ShowTweet(*tweet)
-			return nil
+			return lib.ShowTweet(*tweet)
 		},
 	}
 

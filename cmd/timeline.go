@@ -71,7 +71,9 @@ func mentionTimeline(client twitter.Client, timelineParams TimelineParams) error
 	}
 
 	for _, v := range tweets {
-		lib.ShowTweet(v)
+		if err = lib.ShowTweet(v); err != nil {
+			return err
+		}
 	}
 	return nil
 }
