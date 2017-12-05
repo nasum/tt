@@ -12,5 +12,5 @@ func ShowTweet(tweet twitter.Tweet) {
 	green := color.New(color.FgGreen).SprintFunc()
 	yellow := color.New(color.FgYellow).SprintfFunc()
 	cyan := color.New(color.FgCyan).SprintfFunc()
-	fmt.Printf("%s\t%s\t%s\t%s\n", green(tweet.CreatedAt), yellow(strconv.FormatInt(tweet.ID, 10)), cyan("@"+tweet.User.ScreenName), tweet.Text)
+	fmt.Fprintf(color.Output, "%s\t%s\t%s\t%s\n", green(tweet.CreatedAt), yellow(strconv.FormatInt(tweet.ID, 10)), cyan("@"+tweet.User.ScreenName), tweet.Text)
 }
