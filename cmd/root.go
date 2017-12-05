@@ -30,6 +30,9 @@ func init() {
 	consumerSecret := viper.GetString("CONSUMER_SECRET")
 	accessToken := viper.GetString("ACCESS_TOKEN")
 	accessSecret := viper.GetString("ACCESS_SECRET")
+	if consumerKey == "" || consumerSecret == "" || accessToken == "" || accessSecret == "" {
+		panic(fmt.Errorf("Config file does not have authentication keys/secrets"))
+	}
 
 	config := oauth1.NewConfig(consumerKey, consumerSecret)
 	token := oauth1.NewToken(accessToken, accessSecret)
