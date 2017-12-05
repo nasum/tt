@@ -25,7 +25,7 @@ func init() {
 	viper.SetConfigType("json")
 	err := viper.ReadInConfig()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Cannot read config file: %v", err)
+		fmt.Fprintf(os.Stderr, "cannot read config file: %v", err)
 		os.Exit(1)
 	}
 
@@ -34,7 +34,7 @@ func init() {
 	accessToken := viper.GetString("ACCESS_TOKEN")
 	accessSecret := viper.GetString("ACCESS_SECRET")
 	if consumerKey == "" || consumerSecret == "" || accessToken == "" || accessSecret == "" {
-		fmt.Fprintln(os.Stderr, "Config file does not have authentication keys/secrets")
+		fmt.Fprintln(os.Stderr, "config file does not have authentication keys/secrets")
 		os.Exit(1)
 	}
 
