@@ -21,11 +21,11 @@ func timelineCmd(client twitter.Client) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "timeline",
 		Short: "get your timeline",
-		Run: func(cmd *cobra.Command, args []string) {
+		RunE: func(cmd *cobra.Command, args []string) error {
 			if timelineParams.Reply == true {
-				mentionTimeline(client, *timelineParams)
+				return mentionTimeline(client, *timelineParams)
 			} else {
-				homeTimeline(client, *timelineParams)
+				return homeTimeline(client, *timelineParams)
 			}
 		},
 	}
@@ -39,7 +39,7 @@ func timelineCmd(client twitter.Client) *cobra.Command {
 	return cmd
 }
 
-func homeTimeline(client twitter.Client, timelineParams TimelineParams) {
+func homeTimeline(client twitter.Client, timelineParams TimelineParams) error {
 	homeTimelineParams := &twitter.HomeTimelineParams{
 		Count:   timelineParams.Count,
 		SinceID: timelineParams.SinceID,
@@ -48,15 +48,16 @@ func homeTimeline(client twitter.Client, timelineParams TimelineParams) {
 	tweets, res, err := client.Timelines.HomeTimeline(homeTimelineParams)
 
 	if err != nil {
-		fmt.Println(res)
+		return fmt.Errorf("Cannot get home-timeline: %v: %v", err, res.Status)
 	}
 
 	for _, v := range tweets {
 		lib.ShowTweet(v)
 	}
+	return nil
 }
 
-func mentionTimeline(client twitter.Client, timelineParams TimelineParams) {
+func mentionTimeline(client twitter.Client, timelineParams TimelineParams) error {
 	mentionTimelineParams := &twitter.MentionTimelineParams{
 		Count:   timelineParams.Count,
 		SinceID: timelineParams.SinceID,
@@ -66,10 +67,11 @@ func mentionTimeline(client twitter.Client, timelineParams TimelineParams) {
 	tweets, res, err := client.Timelines.MentionTimeline(mentionTimelineParams)
 
 	if err != nil {
-		fmt.Println(res)
+		return fmt.Errorf("Cannot get mention-timeline: %v: %v", err, res.Status)
 	}
 
 	for _, v := range tweets {
 		lib.ShowTweet(v)
 	}
+	return nil
 }

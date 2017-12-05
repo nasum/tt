@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
@@ -24,7 +25,8 @@ func init() {
 	viper.SetConfigType("json")
 	err := viper.ReadInConfig()
 	if err != nil {
-		panic(fmt.Errorf("Fatal error config file: %s", err))
+		fmt.Fprintf(os.Stderr, "Cannot read config file: %v", err)
+		os.Exit(1)
 	}
 
 	consumerKey := viper.GetString("CONSUMER_KEY")
@@ -32,7 +34,8 @@ func init() {
 	accessToken := viper.GetString("ACCESS_TOKEN")
 	accessSecret := viper.GetString("ACCESS_SECRET")
 	if consumerKey == "" || consumerSecret == "" || accessToken == "" || accessSecret == "" {
-		panic(fmt.Errorf("Config file does not have authentication keys/secrets"))
+		fmt.Fprintln(os.Stderr, "Config file does not have authentication keys/secrets")
+		os.Exit(1)
 	}
 
 	config := oauth1.NewConfig(consumerKey, consumerSecret)
