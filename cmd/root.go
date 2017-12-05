@@ -21,9 +21,10 @@ func init() {
 	viper.AddConfigPath("./")
 	viper.AddConfigPath("$HOME/")
 
+	viper.SetConfigType("json")
 	err := viper.ReadInConfig()
 	if err != nil {
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		panic(fmt.Errorf("Fatal error config file: %s", err))
 	}
 
 	consumerKey := viper.GetString("CONSUMER_KEY")
