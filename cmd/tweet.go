@@ -19,7 +19,10 @@ func tweetCmd(client twitter.Client) *cobra.Command {
 
 			tm.Text = args[0]
 
-			tweet := tm.Update()
+			tweet, err := tm.Update()
+			if err != nil {
+				return err
+			}
 
 			return lib.ShowTweet(*tweet)
 		},
