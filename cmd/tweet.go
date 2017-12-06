@@ -11,18 +11,16 @@ func tweetCmd(client twitter.Client) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "tweet",
 		Short: "post your tweet",
-		Run: func(cmd *cobra.Command, args []string) {
-
-			if len(args) == 0 {
-				cmd.Help()
-				return
-			}
-
+		Args:  cobra.RangeArgs(1, 1),
+		RunE: func(cmd *cobra.Command, args []string) error {
 			tm.Text = args[0]
 
-			tweet := tm.Update()
+			tweet, err := tm.Update()
+			if err != nil {
+				return err
+			}
 
-			lib.ShowTweet(*tweet)
+			return lib.ShowTweet(*tweet)
 		},
 	}
 
@@ -32,6 +30,6 @@ func tweetCmd(client twitter.Client) *cobra.Command {
 	return cmd
 }
 
-func tweet(client twitter.Client, text string, reply_to string) {
-
+func tweet(client twitter.Client, text string, reply_to string) error {
+	return nil
 }
