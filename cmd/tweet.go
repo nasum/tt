@@ -7,6 +7,7 @@ import (
 )
 
 func tweetCmd(client twitter.Client) *cobra.Command {
+	displayConsole := &lib.DisplayConsole{}
 	tm := lib.TweetMethods{Client: client}
 	cmd := &cobra.Command{
 		Use:   "tweet",
@@ -20,7 +21,7 @@ func tweetCmd(client twitter.Client) *cobra.Command {
 				return err
 			}
 
-			return lib.ShowTweet(*tweet)
+			return displayConsole.ShowTweet(*tweet)
 		},
 	}
 

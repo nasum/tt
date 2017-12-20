@@ -16,6 +16,7 @@ type TimelineParams struct {
 }
 
 func timelineCmd(client twitter.Client) *cobra.Command {
+	displayConsole := &lib.DisplayConsole{}
 	timelineParams := &TimelineParams{}
 
 	cmd := &cobra.Command{
@@ -23,9 +24,9 @@ func timelineCmd(client twitter.Client) *cobra.Command {
 		Short: "get your timeline",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if timelineParams.Reply == true {
-				return mentionTimeline(client, *timelineParams)
+				return mentionTimeline(client, *timelineParams, displayConsole)
 			} else {
-				return homeTimeline(client, *timelineParams)
+				return homeTimeline(client, *timelineParams, displayConsole)
 			}
 		},
 	}
@@ -39,7 +40,7 @@ func timelineCmd(client twitter.Client) *cobra.Command {
 	return cmd
 }
 
-func homeTimeline(client twitter.Client, timelineParams TimelineParams) error {
+func homeTimeline(client twitter.Client, timelineParams TimelineParams, displayConsole *lib.DisplayConsole) error {
 	homeTimelineParams := &twitter.HomeTimelineParams{
 		Count:   timelineParams.Count,
 		SinceID: timelineParams.SinceID,
@@ -52,12 +53,12 @@ func homeTimeline(client twitter.Client, timelineParams TimelineParams) error {
 	}
 
 	for _, v := range tweets {
-		lib.ShowTweet(v)
+		displayConsole.ShowTweet(v)
 	}
 	return nil
 }
 
-func mentionTimeline(client twitter.Client, timelineParams TimelineParams) error {
+func mentionTimeline(client twitter.Client, timelineParams TimelineParams, displayConsole *lib.DisplayConsole) error {
 	mentionTimelineParams := &twitter.MentionTimelineParams{
 		Count:   timelineParams.Count,
 		SinceID: timelineParams.SinceID,
@@ -71,7 +72,7 @@ func mentionTimeline(client twitter.Client, timelineParams TimelineParams) error
 	}
 
 	for _, v := range tweets {
-		if err = lib.ShowTweet(v); err != nil {
+		if err = displayConsole.ShowTweet(v); err != nil {
 			return err
 		}
 	}
