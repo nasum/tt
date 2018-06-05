@@ -7,7 +7,7 @@ tt is command line twitter client
 Fetch from GitHub and install.
 
 ```zsh
-$ go get github.com/nausm/tt
+$ go get github.com/nasum/tt
 $ go install
 ```
 
