@@ -66,7 +66,7 @@ func homeTimeline(client twitter.Client, timelineParams TimelineParams, displayC
 			return err
 		}
 
-		return displayConsole.ShowTweet(createdAt, tweet.ID, tweet.User.ScreenName, tweet.Text)
+		displayConsole.ShowTweet(createdAt, tweet.ID, tweet.User.ScreenName, tweet.Text)
 	}
 	return nil
 }
@@ -90,7 +90,7 @@ func mentionTimeline(client twitter.Client, timelineParams TimelineParams, displ
 			return err
 		}
 
-		return displayConsole.ShowTweet(createdAt, tweet.ID, tweet.User.ScreenName, tweet.Text)
+		displayConsole.ShowTweet(createdAt, tweet.ID, tweet.User.ScreenName, tweet.Text)
 	}
 	return nil
 }
