@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dghubble/go-twitter/twitter"
-	"github.com/dghubble/oauth1"
+	"github.com/nasum/tt/lib"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -38,15 +37,16 @@ func init() {
 		os.Exit(1)
 	}
 
-	config := oauth1.NewConfig(consumerKey, consumerSecret)
-	token := oauth1.NewToken(accessToken, accessSecret)
-
-	httpClient := config.Client(oauth1.NoContext, token)
-	client := twitter.NewClient(httpClient)
+	config := lib.Config{
+		ConsumerKey:    consumerKey,
+		ConsumerSecret: consumerSecret,
+		AccessToken:    accessToken,
+		AccessSecret:   accessSecret,
+	}
 
 	cobra.OnInitialize()
 	RootCmd.AddCommand(
-		timelineCmd(*client),
-		tweetCmd(*client),
+		timelineCmd(config),
+		tweetCmd(config),
 	)
 }

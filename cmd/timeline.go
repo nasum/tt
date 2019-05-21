@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/dghubble/go-twitter/twitter"
+	"github.com/dghubble/oauth1"
 	"github.com/nasum/tt/lib"
 	"github.com/spf13/cobra"
 )
@@ -15,7 +16,14 @@ type TimelineParams struct {
 	Reply   bool
 }
 
-func timelineCmd(client twitter.Client) *cobra.Command {
+func timelineCmd(config lib.Config) *cobra.Command {
+
+	oauthConfig := oauth1.NewConfig(config.ConsumerKey, config.ConsumerSecret)
+	token := oauth1.NewToken(config.AccessToken, config.AccessSecret)
+
+	httpClient := oauthConfig.Client(oauth1.NoContext, token)
+	client := twitter.NewClient(httpClient)
+
 	displayConsole := &lib.DisplayConsole{}
 	timelineParams := &TimelineParams{}
 
@@ -24,9 +32,9 @@ func timelineCmd(client twitter.Client) *cobra.Command {
 		Short: "get your timeline",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if timelineParams.Reply == true {
-				return mentionTimeline(client, *timelineParams, displayConsole)
+				return mentionTimeline(*client, *timelineParams, displayConsole)
 			} else {
-				return homeTimeline(client, *timelineParams, displayConsole)
+				return homeTimeline(*client, *timelineParams, displayConsole)
 			}
 		},
 	}
@@ -52,8 +60,13 @@ func homeTimeline(client twitter.Client, timelineParams TimelineParams, displayC
 		return fmt.Errorf("cannot get home-timeline: %v: %v", err, res.Status)
 	}
 
-	for _, v := range tweets {
-		displayConsole.ShowTweet(v)
+	for _, tweet := range tweets {
+		createdAt, err := tweet.CreatedAtTime()
+		if err != nil {
+			return err
+		}
+
+		return displayConsole.ShowTweet(createdAt, tweet.ID, tweet.User.ScreenName, tweet.Text)
 	}
 	return nil
 }
@@ -71,10 +84,13 @@ func mentionTimeline(client twitter.Client, timelineParams TimelineParams, displ
 		return fmt.Errorf("cannot get mention-timeline: %v: %v", err, res.Status)
 	}
 
-	for _, v := range tweets {
-		if err = displayConsole.ShowTweet(v); err != nil {
+	for _, tweet := range tweets {
+		createdAt, err := tweet.CreatedAtTime()
+		if err != nil {
 			return err
 		}
+
+		return displayConsole.ShowTweet(createdAt, tweet.ID, tweet.User.ScreenName, tweet.Text)
 	}
 	return nil
 }

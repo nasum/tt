@@ -3,8 +3,7 @@ package lib
 import (
 	"fmt"
 	"strconv"
-
-	"github.com/dghubble/go-twitter/twitter"
+	"time"
 	"github.com/fatih/color"
 )
 
@@ -26,11 +25,7 @@ func (d *DisplayConsole) ReplyTo(tweet_id string) string {
 	return cyan(tweet_id)
 }
 
-func (d *DisplayConsole) ShowTweet(tweet twitter.Tweet) error {
-	createdAt, err := tweet.CreatedAtTime()
-	if err != nil {
-		return err
-	}
-	fmt.Fprintf(color.Output, "%s\t%s\t%s\t%s\n", d.TimeStamp(createdAt.Local().Format("2006/01/02 15:04:05")), d.TweetID(strconv.FormatInt(tweet.ID, 10)), d.ReplyTo("@"+tweet.User.ScreenName), tweet.Text)
+func (d *DisplayConsole) ShowTweet(createdAt time.Time, tweetId int64, screenName string, text string) error {
+	fmt.Fprintf(color.Output, "%s\t%s\t%s\t%s\n", d.TimeStamp(createdAt.Local().Format("2006/01/02 15:04:05")), d.TweetID(strconv.FormatInt(tweetId, 10)), d.ReplyTo("@"+screenName), text)
 	return nil
 }

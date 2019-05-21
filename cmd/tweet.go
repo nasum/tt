@@ -2,13 +2,20 @@ package cmd
 
 import (
 	"github.com/dghubble/go-twitter/twitter"
+	"github.com/dghubble/oauth1"
 	"github.com/nasum/tt/lib"
 	"github.com/spf13/cobra"
 )
 
-func tweetCmd(client twitter.Client) *cobra.Command {
+func tweetCmd(config lib.Config) *cobra.Command {
+	oauthConfig := oauth1.NewConfig(config.ConsumerKey, config.ConsumerSecret)
+	token := oauth1.NewToken(config.AccessToken, config.AccessSecret)
+
+	httpClient := oauthConfig.Client(oauth1.NoContext, token)
+	client := twitter.NewClient(httpClient)
+
 	displayConsole := &lib.DisplayConsole{}
-	tm := lib.TweetMethods{Client: client}
+	tm := lib.TweetMethods{Client: *client}
 	cmd := &cobra.Command{
 		Use:   "tweet",
 		Short: "post your tweet",
@@ -21,7 +28,12 @@ func tweetCmd(client twitter.Client) *cobra.Command {
 				return err
 			}
 
-			return displayConsole.ShowTweet(*tweet)
+			createdAt, err := tweet.CreatedAtTime()
+			if err != nil {
+				return err
+			}
+			
+			return displayConsole.ShowTweet(createdAt, tweet.ID, tweet.User.ScreenName, tweet.Text)
 		},
 	}
 
