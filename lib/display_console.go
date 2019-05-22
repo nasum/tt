@@ -24,6 +24,12 @@ func (d *DisplayConsole) TweetID(tweetID string) string {
 	return yellow(tweetID)
 }
 
+// ListID is output colored tweet id text
+func (d *DisplayConsole) ListID(listID string) string {
+	yellow := color.New(color.FgYellow).SprintFunc()
+	return yellow(listID)
+}
+
 // ReplyTo is output colored reply text
 func (d *DisplayConsole) ReplyTo(tweetID string) string {
 	cyan := color.New(color.FgCyan).SprintFunc()
@@ -34,6 +40,12 @@ func (d *DisplayConsole) ReplyTo(tweetID string) string {
 func (d *DisplayConsole) URL(url string) string {
 	green := color.New(color.FgGreen).SprintFunc()
 	return green(url)
+}
+
+// Name is output colored name text
+func (d *DisplayConsole) Name(name string) string {
+	yellow := color.New(color.FgYellow).SprintFunc()
+	return yellow(name)
 }
 
 // ShowTweet is display tweet text
@@ -49,11 +61,25 @@ func (d *DisplayConsole) ShowTweet(createdAt time.Time, tweetID int64, screenNam
 }
 
 // ShowList is display list text
-func (d *DisplayConsole) ShowList(title string, url string) {
+func (d *DisplayConsole) ShowList(title string, url string, id int64) {
 	fmt.Fprintf(
 		color.Output,
-		"%s\t%s\n",
+		"%s\t%s\t%s\n",
 		d.URL("https://twitter.com/"+url),
+		d.ListID(strconv.FormatInt(id, 10)),
 		title,
+	)
+}
+
+// ShowUser is display user
+func (d *DisplayConsole) ShowUser(name string, screenName string, url string, friendsCount int, followersCount int) {
+	fmt.Fprintf(
+		color.Output,
+		"%s\t%s\t%s\t%s\t%s\n",
+		d.URL("https://twitter.com/"+screenName),
+		d.Name(name),
+		d.Name("@"+screenName),
+		strconv.Itoa(friendsCount),
+		strconv.Itoa(followersCount),
 	)
 }
