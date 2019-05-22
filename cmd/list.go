@@ -1,13 +1,16 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 	"github.com/nasum/tt/lib"
 	"github.com/spf13/cobra"
 )
 
-func tweetCmd(config lib.Config) *cobra.Command {
+func listCmd(config lib.Config) *cobra.Command {
+
 	oauthConfig := oauth1.NewConfig(config.ConsumerKey, config.ConsumerSecret)
 	token := oauth1.NewToken(config.AccessToken, config.AccessSecret)
 
@@ -15,35 +18,32 @@ func tweetCmd(config lib.Config) *cobra.Command {
 	client := twitter.NewClient(httpClient)
 
 	displayConsole := &lib.DisplayConsole{}
-	tm := lib.TweetMethods{Client: *client}
+
 	cmd := &cobra.Command{
-		Use:   "tweet",
-		Short: "post your tweet",
-		Args:  cobra.RangeArgs(1, 1),
+		Use:   "list",
+		Short: "get your list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			tm.Text = args[0]
+			user, res, err := client.Accounts.VerifyCredentials(&twitter.AccountVerifyParams{})
 
-			tweet, err := tm.Update()
 			if err != nil {
-				return err
+				return fmt.Errorf("cannot get VerifyCredentials: %v: %v", err, res.Status)
 			}
 
-			createdAt, err := tweet.CreatedAtTime()
+			lists, res, err := client.Lists.List(&twitter.ListsListParams{
+				UserID: user.ID,
+			})
+
 			if err != nil {
-				return err
+				return fmt.Errorf("cannot get list: %v: %v", err, res.Status)
 			}
 
-			displayConsole.ShowTweet(createdAt, tweet.ID, tweet.User.ScreenName, tweet.Text)
+			for _, list := range lists {
+				displayConsole.ShowList(list.Name, list.URI)
+			}
+
 			return nil
 		},
 	}
 
-	flags := cmd.Flags()
-	flags.Int64VarP(&tm.ReplyTo, "mention", "m", 0, "Set mention tweet id")
-
 	return cmd
-}
-
-func tweet(client twitter.Client, text string, reply_to string) error {
-	return nil
 }

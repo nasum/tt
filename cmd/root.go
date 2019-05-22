@@ -48,5 +48,6 @@ func init() {
 	RootCmd.AddCommand(
 		timelineCmd(config),
 		tweetCmd(config),
+		listCmd(config),
 	)
 }
