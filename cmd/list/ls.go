@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// LSCmd is show my list
 func LSCmd(config lib.Config) *cobra.Command {
 
 	oauthConfig := oauth1.NewConfig(config.ConsumerKey, config.ConsumerSecret)
