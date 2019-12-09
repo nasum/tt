@@ -32,8 +32,7 @@ func tweetCmd(config lib.Config) *cobra.Command {
 			if err != nil {
 				return err
 			}
-
-			displayConsole.ShowTweet(createdAt, tweet.ID, tweet.User.ScreenName, tweet.Text)
+			displayConsole.ShowTweet(createdAt, tweet.ID, tweet.User.ScreenName, tweet.FullText)
 			return nil
 		},
 	}
