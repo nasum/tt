@@ -5,7 +5,7 @@ require (
 	github.com/coreos/etcd v3.3.13+incompatible // indirect
 	github.com/coreos/go-semver v0.3.0 // indirect
 	github.com/dghubble/go-twitter v0.0.0-20190512073027-53f972dc4b06
-	github.com/dghubble/oauth1 v0.5.0
+	github.com/dghubble/oauth1 v0.6.0
 	github.com/dghubble/sling v1.2.0
 	github.com/fatih/color v1.7.0
 	github.com/fsnotify/fsnotify v1.4.7
