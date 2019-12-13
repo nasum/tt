@@ -26,15 +26,16 @@ func timelineCmd(config lib.Config) *cobra.Command {
 
 	displayConsole := &lib.DisplayConsole{}
 	timelineParams := &TimelineParams{}
+	media := &lib.Media{}
 
 	cmd := &cobra.Command{
 		Use:   "timeline",
 		Short: "get your timeline",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if timelineParams.Reply == true {
-				return mentionTimeline(*client, *timelineParams, displayConsole)
+				return mentionTimeline(*client, *timelineParams, displayConsole, media)
 			} else {
-				return homeTimeline(*client, *timelineParams, displayConsole)
+				return homeTimeline(*client, *timelineParams, displayConsole, media)
 			}
 		},
 	}
@@ -48,7 +49,7 @@ func timelineCmd(config lib.Config) *cobra.Command {
 	return cmd
 }
 
-func homeTimeline(client twitter.Client, timelineParams TimelineParams, displayConsole *lib.DisplayConsole) error {
+func homeTimeline(client twitter.Client, timelineParams TimelineParams, displayConsole *lib.DisplayConsole, media *lib.Media) error {
 	homeTimelineParams := &twitter.HomeTimelineParams{
 		Count:   timelineParams.Count,
 		SinceID: timelineParams.SinceID,
@@ -67,11 +68,18 @@ func homeTimeline(client twitter.Client, timelineParams TimelineParams, displayC
 		}
 
 		displayConsole.ShowTweet(createdAt, tweet.ID, tweet.User.ScreenName, tweet.Text)
+		medias := tweet.Entities.Media
+		for _, mediaEntity := range medias {
+			if mediaEntity.Type == "photo" {
+				media.ShowImage(mediaEntity.MediaURLHttps + ":thumb")
+				fmt.Println()
+			}
+		}
 	}
 	return nil
 }
 
-func mentionTimeline(client twitter.Client, timelineParams TimelineParams, displayConsole *lib.DisplayConsole) error {
+func mentionTimeline(client twitter.Client, timelineParams TimelineParams, displayConsole *lib.DisplayConsole, media *lib.Media) error {
 	mentionTimelineParams := &twitter.MentionTimelineParams{
 		Count:   timelineParams.Count,
 		SinceID: timelineParams.SinceID,
@@ -91,6 +99,13 @@ func mentionTimeline(client twitter.Client, timelineParams TimelineParams, displ
 		}
 
 		displayConsole.ShowTweet(createdAt, tweet.ID, tweet.User.ScreenName, tweet.Text)
+		medias := tweet.Entities.Media
+		for _, mediaEntity := range medias {
+			if mediaEntity.Type == "photo" {
+				media.ShowImage(mediaEntity.MediaURLHttps + ":thumb")
+				fmt.Println()
+			}
+		}
 	}
 	return nil
 }
