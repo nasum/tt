@@ -1,7 +1,7 @@
 module github.com/nasum/tt
 
 require (
-	github.com/cenkalti/backoff v2.1.1+incompatible
+	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/coreos/etcd v3.3.13+incompatible // indirect
 	github.com/coreos/go-semver v0.3.0 // indirect
 	github.com/dghubble/go-twitter v0.0.0-20190512073027-53f972dc4b06
