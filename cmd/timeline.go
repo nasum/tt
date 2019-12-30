@@ -62,12 +62,9 @@ func homeTimeline(client twitter.Client, timelineParams TimelineParams, displayC
 	}
 
 	for _, tweet := range tweets {
-		createdAt, err := tweet.CreatedAtTime()
-		if err != nil {
-			return err
-		}
 
-		displayConsole.ShowTweet(createdAt, tweet.ID, tweet.User.ScreenName, tweet.Text)
+		displayConsole.ShowTweet(tweet)
+
 		medias := tweet.Entities.Media
 		for _, mediaEntity := range medias {
 			if mediaEntity.Type == "photo" {
@@ -93,12 +90,13 @@ func mentionTimeline(client twitter.Client, timelineParams TimelineParams, displ
 	}
 
 	for _, tweet := range tweets {
-		createdAt, err := tweet.CreatedAtTime()
+
+		err = displayConsole.ShowTweet(tweet)
+
 		if err != nil {
-			return err
+			return fmt.Errorf("cannot display tweet: %v", err)
 		}
 
-		displayConsole.ShowTweet(createdAt, tweet.ID, tweet.User.ScreenName, tweet.Text)
 		medias := tweet.Entities.Media
 		for _, mediaEntity := range medias {
 			if mediaEntity.Type == "photo" {

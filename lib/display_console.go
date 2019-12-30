@@ -3,9 +3,15 @@ package lib
 import (
 	"fmt"
 	"strconv"
-	"time"
+	"strings"
 
+	"github.com/dghubble/go-twitter/twitter"
 	"github.com/fatih/color"
+)
+
+const (
+	// TwitterURL is twitter home url
+	TwitterURL string = "https://twitter.com"
 )
 
 // DisplayConsole is struct
@@ -49,15 +55,24 @@ func (d *DisplayConsole) Name(name string) string {
 }
 
 // ShowTweet is display tweet text
-func (d *DisplayConsole) ShowTweet(createdAt time.Time, tweetID int64, screenName string, text string) {
+func (d *DisplayConsole) ShowTweet(tweet twitter.Tweet) error {
+	createdAt, err := tweet.CreatedAtTime()
+
+	if err != nil {
+		return err
+	}
+
 	fmt.Fprintf(
 		color.Output,
-		"%s\t%s\t%s\t%s\n",
+		"%s\t%s\t%s\t%s\n%s\n",
 		d.TimeStamp(createdAt.Local().Format("2006/01/02 15:04:05")),
-		d.TweetID(strconv.FormatInt(tweetID, 10)),
-		d.ReplyTo("@"+screenName),
-		text,
+		d.TweetID(tweet.IDStr),
+		d.ReplyTo("@"+tweet.User.ScreenName),
+		d.URL(d.createTweetURL(tweet)),
+		tweet.Text,
 	)
+
+	return nil
 }
 
 // ShowList is display list text
@@ -82,4 +97,9 @@ func (d *DisplayConsole) ShowUser(name string, screenName string, url string, fr
 		strconv.Itoa(friendsCount),
 		strconv.Itoa(followersCount),
 	)
+}
+
+func (d *DisplayConsole) createTweetURL(tweet twitter.Tweet) string {
+	array := []string{TwitterURL, tweet.User.ScreenName, "status", tweet.IDStr}
+	return strings.Join(array, "/")
 }
