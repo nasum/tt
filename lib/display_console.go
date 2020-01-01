@@ -72,6 +72,16 @@ func (d *DisplayConsole) ShowTweet(tweet twitter.Tweet) error {
 		tweet.Text,
 	)
 
+	media := &Media{}
+
+	medias := tweet.Entities.Media
+	for _, mediaEntity := range medias {
+		if mediaEntity.Type == "photo" {
+			media.ShowImage(mediaEntity.MediaURLHttps + ":thumb")
+			fmt.Println()
+		}
+	}
+
 	return nil
 }
 

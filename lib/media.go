@@ -28,7 +28,7 @@ func (m *Media) ShowImage(url string) error {
 	buf, err := ioutil.ReadAll(res.Body)
 
 	if err != nil {
-		return fmt.Errorf("cannot decode image %v", err)
+		return fmt.Errorf("cannot read body %v", err)
 	}
 
 	img, _, err := image.Decode(bytes.NewReader(buf))

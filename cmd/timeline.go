@@ -26,16 +26,15 @@ func timelineCmd(config lib.Config) *cobra.Command {
 
 	displayConsole := &lib.DisplayConsole{}
 	timelineParams := &TimelineParams{}
-	media := &lib.Media{}
 
 	cmd := &cobra.Command{
 		Use:   "timeline",
 		Short: "get your timeline",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if timelineParams.Reply == true {
-				return mentionTimeline(*client, *timelineParams, displayConsole, media)
+				return mentionTimeline(*client, *timelineParams, displayConsole)
 			} else {
-				return homeTimeline(*client, *timelineParams, displayConsole, media)
+				return homeTimeline(*client, *timelineParams, displayConsole)
 			}
 		},
 	}
@@ -49,7 +48,7 @@ func timelineCmd(config lib.Config) *cobra.Command {
 	return cmd
 }
 
-func homeTimeline(client twitter.Client, timelineParams TimelineParams, displayConsole *lib.DisplayConsole, media *lib.Media) error {
+func homeTimeline(client twitter.Client, timelineParams TimelineParams, displayConsole *lib.DisplayConsole) error {
 	homeTimelineParams := &twitter.HomeTimelineParams{
 		Count:   timelineParams.Count,
 		SinceID: timelineParams.SinceID,
@@ -62,21 +61,17 @@ func homeTimeline(client twitter.Client, timelineParams TimelineParams, displayC
 	}
 
 	for _, tweet := range tweets {
-
-		displayConsole.ShowTweet(tweet)
-
-		medias := tweet.Entities.Media
-		for _, mediaEntity := range medias {
-			if mediaEntity.Type == "photo" {
-				media.ShowImage(mediaEntity.MediaURLHttps + ":thumb")
-				fmt.Println()
-			}
+		err := displayConsole.ShowTweet(tweet)
+		
+		if err != nil {
+			return fmt.Errorf("cannot display tweet: %v", err)
 		}
 	}
+
 	return nil
 }
 
-func mentionTimeline(client twitter.Client, timelineParams TimelineParams, displayConsole *lib.DisplayConsole, media *lib.Media) error {
+func mentionTimeline(client twitter.Client, timelineParams TimelineParams, displayConsole *lib.DisplayConsole) error {
 	mentionTimelineParams := &twitter.MentionTimelineParams{
 		Count:   timelineParams.Count,
 		SinceID: timelineParams.SinceID,
@@ -90,19 +85,10 @@ func mentionTimeline(client twitter.Client, timelineParams TimelineParams, displ
 	}
 
 	for _, tweet := range tweets {
-
 		err = displayConsole.ShowTweet(tweet)
 
 		if err != nil {
 			return fmt.Errorf("cannot display tweet: %v", err)
-		}
-
-		medias := tweet.Entities.Media
-		for _, mediaEntity := range medias {
-			if mediaEntity.Type == "photo" {
-				media.ShowImage(mediaEntity.MediaURLHttps + ":thumb")
-				fmt.Println()
-			}
 		}
 	}
 	return nil
