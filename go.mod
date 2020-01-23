@@ -33,7 +33,7 @@ require (
 	golang.org/x/sys v0.0.0-20191026070338-33540a1f6037
 	golang.org/x/text v0.3.2
 	golang.org/x/tools v0.0.0-20190521171243-7927dbab1be7 // indirect
-	gopkg.in/yaml.v2 v2.2.7
+	gopkg.in/yaml.v2 v2.2.8
 )
 
 go 1.13
