@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"strings"
+
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 	"github.com/nasum/tt/lib"
@@ -19,9 +21,8 @@ func tweetCmd(config lib.Config) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "tweet",
 		Short: "post your tweet",
-		Args:  cobra.RangeArgs(1, 1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			tm.Text = args[0]
+			tm.Text = strings.Join(args, " ")
 
 			tweet, err := tm.Update()
 			if err != nil {
