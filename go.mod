@@ -7,7 +7,7 @@ require (
 	github.com/dghubble/go-twitter v0.0.0-20190512073027-53f972dc4b06
 	github.com/dghubble/oauth1 v0.6.0
 	github.com/dghubble/sling v1.3.0
-	github.com/fatih/color v1.8.0
+	github.com/fatih/color v1.9.0
 	github.com/fsnotify/fsnotify v1.4.7
 	github.com/google/go-querystring v1.0.0
 	github.com/hashicorp/hcl v1.0.0
