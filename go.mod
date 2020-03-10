@@ -8,7 +8,7 @@ require (
 	github.com/dghubble/oauth1 v0.6.0
 	github.com/dghubble/sling v1.3.0
 	github.com/fatih/color v1.9.0
-	github.com/fsnotify/fsnotify v1.4.7
+	github.com/fsnotify/fsnotify v1.4.8
 	github.com/google/go-querystring v1.0.0
 	github.com/hashicorp/hcl v1.0.0
 	github.com/inconshreveable/mousetrap v1.0.0
