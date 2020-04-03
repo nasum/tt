@@ -17,7 +17,7 @@ require (
 	github.com/mattn/go-isatty v0.0.12
 	github.com/mattn/go-sixel v0.0.1
 	github.com/mitchellh/mapstructure v1.1.2
-	github.com/pelletier/go-toml v1.6.0
+	github.com/pelletier/go-toml v1.7.0
 	github.com/russross/blackfriday v2.0.0+incompatible // indirect
 	github.com/soniakeys/quant v1.0.0 // indirect
 	github.com/spf13/afero v1.2.2
