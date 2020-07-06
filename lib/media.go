@@ -21,7 +21,7 @@ type Media struct{}
 func (m *Media) ShowImage(url string) error {
 	res, err := http.Get(url)
 	if err != nil {
-		fmt.Errorf("cannot get image: %v: %v", err, res.Status)
+		return fmt.Errorf("cannot get image: %v: %v", err, res.Status)
 	}
 	defer res.Body.Close()
 

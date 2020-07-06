@@ -29,7 +29,7 @@ func tweetCmd(config lib.Config) *cobra.Command {
 				return err
 			}
 
-			err = displayConsole.ShowTweet(*tweet)
+			err = displayConsole.ShowTweet(*tweet, true)
 			if err != nil {
 				return err
 			}
@@ -42,8 +42,4 @@ func tweetCmd(config lib.Config) *cobra.Command {
 	flags.Int64VarP(&tm.ReplyTo, "mention", "m", 0, "Set mention tweet id")
 
 	return cmd
-}
-
-func tweet(client twitter.Client, text string, reply_to string) error {
-	return nil
 }

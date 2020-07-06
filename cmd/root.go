@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// RootCmd is root command
 var RootCmd = &cobra.Command{
 	Use:           "tt",
 	Short:         "Twitter Client",

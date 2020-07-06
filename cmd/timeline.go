@@ -9,11 +9,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// TimelineParams command params
 type TimelineParams struct {
-	Count   int
-	SinceID int64
-	MaxID   int64
-	Reply   bool
+	Count     int
+	SinceID   int64
+	MaxID     int64
+	Reply     bool
+	ShowImage bool
 }
 
 func timelineCmd(config lib.Config) *cobra.Command {
@@ -33,9 +35,8 @@ func timelineCmd(config lib.Config) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if timelineParams.Reply == true {
 				return mentionTimeline(*client, *timelineParams, displayConsole)
-			} else {
-				return homeTimeline(*client, *timelineParams, displayConsole)
 			}
+			return homeTimeline(*client, *timelineParams, displayConsole)
 		},
 	}
 
@@ -44,6 +45,7 @@ func timelineCmd(config lib.Config) *cobra.Command {
 	flags.Int64VarP(&timelineParams.SinceID, "since-id", "S", 0, "Set since tweet id")
 	flags.Int64VarP(&timelineParams.MaxID, "max-id", "M", 0, "Set max tweet id")
 	flags.BoolVarP(&timelineParams.Reply, "mention", "m", false, "show mention timeline")
+	flags.BoolVarP(&timelineParams.ShowImage, "show-images", "s", false, "show images")
 
 	return cmd
 }
@@ -61,8 +63,8 @@ func homeTimeline(client twitter.Client, timelineParams TimelineParams, displayC
 	}
 
 	for _, tweet := range tweets {
-		err := displayConsole.ShowTweet(tweet)
-		
+		err := displayConsole.ShowTweet(tweet, timelineParams.ShowImage)
+
 		if err != nil {
 			return fmt.Errorf("cannot display tweet: %v", err)
 		}
@@ -85,7 +87,7 @@ func mentionTimeline(client twitter.Client, timelineParams TimelineParams, displ
 	}
 
 	for _, tweet := range tweets {
-		err = displayConsole.ShowTweet(tweet)
+		err = displayConsole.ShowTweet(tweet, timelineParams.ShowImage)
 
 		if err != nil {
 			return fmt.Errorf("cannot display tweet: %v", err)

@@ -1,8 +1,9 @@
 package lib
 
+// Config is twitter authentication
 type Config struct {
-	ConsumerKey string
+	ConsumerKey    string
 	ConsumerSecret string
-	AccessToken string
-	AccessSecret string
+	AccessToken    string
+	AccessSecret   string
 }

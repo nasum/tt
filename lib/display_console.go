@@ -55,7 +55,7 @@ func (d *DisplayConsole) Name(name string) string {
 }
 
 // ShowTweet is display tweet text
-func (d *DisplayConsole) ShowTweet(tweet twitter.Tweet) error {
+func (d *DisplayConsole) ShowTweet(tweet twitter.Tweet, showImage bool) error {
 	createdAt, err := tweet.CreatedAtTime()
 
 	if err != nil {
@@ -71,6 +71,10 @@ func (d *DisplayConsole) ShowTweet(tweet twitter.Tweet) error {
 		d.URL(d.createTweetURL(tweet)),
 		tweet.Text,
 	)
+
+	if showImage == false {
+		return nil
+	}
 
 	media := &Media{}
 
