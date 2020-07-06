@@ -16,7 +16,7 @@ require (
 	github.com/mattn/go-colorable v0.1.6
 	github.com/mattn/go-isatty v0.0.12
 	github.com/mattn/go-sixel v0.0.1
-	github.com/mitchellh/mapstructure v1.1.2
+	github.com/mitchellh/mapstructure v1.3.2
 	github.com/pelletier/go-toml v1.6.0
 	github.com/russross/blackfriday v2.0.0+incompatible // indirect
 	github.com/soniakeys/quant v1.0.0 // indirect
@@ -30,7 +30,7 @@ require (
 	golang.org/x/crypto v0.0.0-20190513172903-22d7a77e9e5f // indirect
 	golang.org/x/image v0.0.0-20191206065243-da761ea9ff43
 	golang.org/x/net v0.0.0-20190522155817-f3200d17e092
-	golang.org/x/sys v0.0.0-20200116001909-b77594299b42
+	golang.org/x/sys v0.0.0-20200223170610-d5e6a3e2c0ae
 	golang.org/x/text v0.3.2
 	golang.org/x/tools v0.0.0-20190521171243-7927dbab1be7 // indirect
 	gopkg.in/yaml.v2 v2.3.0
