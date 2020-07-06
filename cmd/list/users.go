@@ -41,7 +41,20 @@ func UsersCmd(config lib.Config) *cobra.Command {
 				}
 
 				for _, user := range members.Users {
-					displayConsole.ShowUser(user.Name, user.ScreenName, user.URL, user.FriendsCount, user.FollowersCount)
+					userTimelineParams := &twitter.UserTimelineParams{
+						UserID: user.ID,
+					}
+					tweets, res, err := client.Timelines.UserTimeline(userTimelineParams)
+
+					if err != nil {
+						return fmt.Errorf("cannot get user-timeline: %v: %v", err, res.Status)
+					}
+
+					if len(tweets) > 0 {
+						displayConsole.ShowUser(user.Name, user.ScreenName, user.URL, user.FriendsCount, user.FollowersCount, tweets[0].CreatedAt)
+					} else {
+						displayConsole.ShowUser(user.Name, user.ScreenName, user.URL, user.FriendsCount, user.FollowersCount, "none")
+					}
 				}
 				cursor = members.NextCursor
 			}

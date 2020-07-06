@@ -101,15 +101,16 @@ func (d *DisplayConsole) ShowList(title string, url string, id int64) {
 }
 
 // ShowUser is display user
-func (d *DisplayConsole) ShowUser(name string, screenName string, url string, friendsCount int, followersCount int) {
+func (d *DisplayConsole) ShowUser(name string, screenName string, url string, friendsCount int, followersCount int, lastUpdatedAt string) {
 	fmt.Fprintf(
 		color.Output,
-		"%s\t%s\t%s\t%s\t%s\n",
+		"%s\t%s\t%s\t%s\t%s\t%s\n",
 		d.URL("https://twitter.com/"+screenName),
 		d.Name(name),
 		d.Name("@"+screenName),
 		strconv.Itoa(friendsCount),
 		strconv.Itoa(followersCount),
+		lastUpdatedAt,
 	)
 }
 
