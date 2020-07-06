@@ -28,7 +28,7 @@ require (
 	golang.org/x/image v0.0.0-20191206065243-da761ea9ff43
 	golang.org/x/net v0.0.0-20190620200207-3b0461eec859
 	golang.org/x/sys v0.0.0-20200223170610-d5e6a3e2c0ae
-	golang.org/x/text v0.3.2
+	golang.org/x/text v0.3.3
 	gopkg.in/yaml.v2 v2.3.0
 )
 
