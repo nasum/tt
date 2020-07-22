@@ -14,7 +14,7 @@ require (
 	github.com/mattn/go-colorable v0.1.7
 	github.com/mattn/go-isatty v0.0.12
 	github.com/mattn/go-sixel v0.0.1
-	github.com/mitchellh/mapstructure v1.3.2
+	github.com/mitchellh/mapstructure v1.3.3
 	github.com/pelletier/go-toml v1.8.0
 	github.com/russross/blackfriday v2.0.0+incompatible // indirect
 	github.com/soniakeys/quant v1.0.0 // indirect
