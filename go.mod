@@ -10,7 +10,7 @@ require (
 	github.com/google/go-querystring v1.0.0
 	github.com/hashicorp/hcl v1.0.0
 	github.com/inconshreveable/mousetrap v1.0.0
-	github.com/magiconair/properties v1.8.1
+	github.com/magiconair/properties v1.8.2
 	github.com/mattn/go-colorable v0.1.7
 	github.com/mattn/go-isatty v0.0.12
 	github.com/mattn/go-sixel v0.0.1
