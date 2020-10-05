@@ -11,7 +11,7 @@ require (
 	github.com/hashicorp/hcl v1.0.0
 	github.com/inconshreveable/mousetrap v1.0.0
 	github.com/magiconair/properties v1.8.1
-	github.com/mattn/go-colorable v0.1.7
+	github.com/mattn/go-colorable v0.1.8
 	github.com/mattn/go-isatty v0.0.12
 	github.com/mattn/go-sixel v0.0.1
 	github.com/mitchellh/mapstructure v1.3.2
