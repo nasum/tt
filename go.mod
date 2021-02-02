@@ -3,7 +3,7 @@ module github.com/nasum/tt
 require (
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/dghubble/go-twitter v0.0.0-20190512073027-53f972dc4b06
-	github.com/dghubble/oauth1 v0.6.0
+	github.com/dghubble/oauth1 v0.7.0
 	github.com/dghubble/sling v1.3.0
 	github.com/fatih/color v1.10.0
 	github.com/fsnotify/fsnotify v1.4.9
